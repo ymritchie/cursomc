@@ -13,6 +13,7 @@ import com.ritchie.cursomc.domain.Cidade;
 import com.ritchie.cursomc.domain.Cliente;
 import com.ritchie.cursomc.domain.Endereco;
 import com.ritchie.cursomc.domain.Estado;
+import com.ritchie.cursomc.domain.ItemPedido;
 import com.ritchie.cursomc.domain.Pagamento;
 import com.ritchie.cursomc.domain.PagamentoComBoleto;
 import com.ritchie.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.ritchie.cursomc.repositories.CidadeRepository;
 import com.ritchie.cursomc.repositories.ClienteRepository;
 import com.ritchie.cursomc.repositories.EnderecoRepository;
 import com.ritchie.cursomc.repositories.EstadoRepository;
+import com.ritchie.cursomc.repositories.ItemPedidoRepository;
 import com.ritchie.cursomc.repositories.PagamentoRepository;
 import com.ritchie.cursomc.repositories.PedidoRepository;
 import com.ritchie.cursomc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CursomcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -122,6 +127,23 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0D, 1, 2000D);
+		
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0D, 2, 80D);
+		
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100D, 1, 800D);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		
+		ped1.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().add(ip1);
+		p2.getItens().add(ip3);
+		p2.getItens().add(ip2);
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
 		
 	}
 
