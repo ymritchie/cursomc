@@ -1,7 +1,5 @@
 package com.ritchie.cursomc.domain;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 
 import com.ritchie.cursomc.domain.enums.EstadoPagamento;
