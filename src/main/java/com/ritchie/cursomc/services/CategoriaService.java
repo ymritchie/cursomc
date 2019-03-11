@@ -1,12 +1,15 @@
 package com.ritchie.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.ritchie.cursomc.domain.Categoria;
 import com.ritchie.cursomc.repositories.CategoriaRepository;
+import com.ritchie.cursomc.services.exceptions.DataIntegrityException;
 import com.ritchie.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -28,6 +31,21 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repository.save(obj);
+	}
+
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir a categoria com produtos");
+		}
+		
+	}
+
+	public List<Categoria> findAll() {
+		
+		return repository.findAll();
 	}
 }
 
