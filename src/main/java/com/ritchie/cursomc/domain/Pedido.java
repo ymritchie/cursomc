@@ -100,10 +100,18 @@ public class Pedido implements Serializable {
 		return itens;
 	}
 
-
-
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
+	}
+	
+	
+	public double getValorTotal() {
+		double soma = 0D;
+		for (ItemPedido ip : itens) {
+			soma += ip.getSubTotal();
+		}
+		
+		return soma;
 	}
 
 
