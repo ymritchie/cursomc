@@ -26,7 +26,6 @@ public class Estado implements Serializable {
 	private List<Cidade> cidades = new ArrayList<Cidade>();
 	
 	public Estado() {
-		super();
 	}
 	
 	public Estado(Integer id, String nome) {

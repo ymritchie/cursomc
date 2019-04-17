@@ -48,7 +48,6 @@ public class Cliente implements Serializable{
 	
 	
 	public Cliente() {
-		super();
 	}
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
 		super();
