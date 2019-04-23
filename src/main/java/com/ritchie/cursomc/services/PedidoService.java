@@ -64,7 +64,7 @@ public class PedidoService {
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens());
-		
+		System.out.println(obj);
 		return obj;
 	}
 	
