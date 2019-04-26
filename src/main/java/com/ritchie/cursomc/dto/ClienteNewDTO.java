@@ -2,10 +2,9 @@ package com.ritchie.cursomc.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.ritchie.cursomc.services.validation.ClienteInsert;
 
@@ -28,6 +27,7 @@ public class ClienteNewDTO implements Serializable{
 	
 	@NotEmpty(message="Preencimento Obrigatório!")
 	private String logradouro;
+	
 	@NotEmpty(message="Preencimento Obrigatório!")
 	private String numero;
 	

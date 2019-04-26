@@ -1,7 +1,6 @@
 package com.ritchie.cursomc.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,8 +31,11 @@ public class ClienteService {
 	private EnderecoRepository endreEnderecoRepository;
 	
 	public Cliente find(Integer id) {
-		Optional<Cliente> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado para o ID " + id + " na classe " + Cliente.class.getName()));
+		 Cliente obj = repository.findOne(id);
+		 if (obj == null) {
+			 throw new ObjectNotFoundException("Cliente não encontrado para o ID " + id + " na classe " + Cliente.class.getName());
+		 }
+		return obj; 
 	}
 	
 	public Cliente update(Cliente obj) {
@@ -50,7 +52,7 @@ public class ClienteService {
 	public void delete(Integer id) {
 		find(id);
 		try {
-			repository.deleteById(id);
+			repository.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque existem entidades relacionadas.");
 		}
@@ -63,7 +65,7 @@ public class ClienteService {
 	}
 	
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
 	}
 	
@@ -75,7 +77,7 @@ public class ClienteService {
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		obj = repository.save(obj);
-		endreEnderecoRepository.saveAll(obj.getEnderecos());
+		endreEnderecoRepository.save(obj.getEnderecos());
 		return obj;
 		
 	}

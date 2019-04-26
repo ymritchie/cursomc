@@ -23,8 +23,11 @@ public class CategoriaService {
 	private CategoriaRepository repository;
 	
 	public Categoria find(Integer id) {
-		Optional<Categoria> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada para o ID " + id + " na classe " + Categoria.class.getName()));
+		Categoria obj = repository.findOne(id);
+		if (obj == null) {
+			throw new ObjectNotFoundException("Categoria não encontrada para o ID " + id + " na classe " + Categoria.class.getName());
+		}
+		return obj;
 	}
 	
 	public Categoria insert(Categoria obj) {
@@ -45,7 +48,7 @@ public class CategoriaService {
 	public void delete(Integer id) {
 		find(id);
 		try {
-			repository.deleteById(id);
+			repository.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir a categoria com produtos");
 		}
@@ -58,7 +61,7 @@ public class CategoriaService {
 	}
 	
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
 	}
 	

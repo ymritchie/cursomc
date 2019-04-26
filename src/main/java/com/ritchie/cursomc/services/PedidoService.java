@@ -39,8 +39,12 @@ public class PedidoService {
 	
 	
 	public Pedido find(Integer id) {
-		Optional<Pedido> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Pedido não encontrado para o ID " + id + " na classe " + Pedido.class.getName()));
+		Pedido obj = repository.findOne(id);
+		
+		if (obj == null) {
+			throw new ObjectNotFoundException("Pedido não encontrado para o ID " + id + " na classe " + Pedido.class.getName()); 
+		}
+		return obj; 
 	}
 	
 	@Transactional
@@ -66,7 +70,7 @@ public class PedidoService {
 			ip.setPedido(obj);
 		}
 		
-		itemPedidoRepository.saveAll(obj.getItens());
+		itemPedidoRepository.save(obj.getItens());
 		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}

@@ -3,6 +3,7 @@ package com.ritchie.cursomc.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,8 +103,8 @@ public class DBService {
 		p10.getCategorias().add(cat6);
 		p11.getCategorias().add(cat7);
 		
-		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
+		categoriaRepository.save(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
+		produtoRepository.save(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
@@ -114,9 +115,12 @@ public class DBService {
 
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2, c3));
+		
+		List<Estado> listaEstado = Arrays.asList(est1, est2);
+		List<Cidade> listaCidade = Arrays.asList(c1, c2, c3);
 
-		estadoRepository.saveAll(Arrays.asList(est1, est2));
-		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		estadoRepository.save(listaEstado);
+		cidadeRepository.save(listaCidade);
 
 		Cliente cli1 = new Cliente(null, "Maria ", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
 
@@ -127,9 +131,10 @@ public class DBService {
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-
+		List<Endereco> listaEndereco = Arrays.asList(e1, e2);
+		
 		clienteRepository.save(cli1);
-		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		enderecoRepository.save(listaEndereco);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -144,9 +149,13 @@ public class DBService {
 		ped2.setPagamento(pagto2);
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
+		List<Pedido> listaPedido = Arrays.asList(ped1, ped2);
+		
+		List<Pagamento> listaPagamento = Arrays.asList(pagto1, pagto2);
 
-		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
-		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		pedidoRepository.save(listaPedido);
+		pagamentoRepository.save(listaPagamento);
 
 		ItemPedido ip1 = new ItemPedido(ped1, p1, 0D, 1, 2000D);
 
@@ -161,7 +170,9 @@ public class DBService {
 		p1.getItens().add(ip1);
 		p2.getItens().add(ip3);
 		p2.getItens().add(ip2);
+		
+		List<ItemPedido> listaItemPedido = Arrays.asList(ip1, ip2, ip3);
 
-		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		itemPedidoRepository.save(listaItemPedido);
 	}
 }
