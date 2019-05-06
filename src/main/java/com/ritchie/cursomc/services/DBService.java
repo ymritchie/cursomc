@@ -21,6 +21,7 @@ import com.ritchie.cursomc.domain.PagamentoComCartao;
 import com.ritchie.cursomc.domain.Pedido;
 import com.ritchie.cursomc.domain.Produto;
 import com.ritchie.cursomc.domain.enums.EstadoPagamento;
+import com.ritchie.cursomc.domain.enums.Perfil;
 import com.ritchie.cursomc.domain.enums.TipoCliente;
 import com.ritchie.cursomc.repositories.CategoriaRepository;
 import com.ritchie.cursomc.repositories.CidadeRepository;
@@ -127,17 +128,25 @@ public class DBService {
 		cidadeRepository.save(listaCidade);
 
 		Cliente cli1 = new Cliente(null, "Maria ", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		
+		Cliente cli2 = new Cliente(null, "Anna Costa ", "anna@gmail.com", "52936725097", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cli2.addPerfil(Perfil.ADMIN);
 
+		cli1.getTelefones().addAll(Arrays.asList("9999999", "8888888"));
+		
 		cli1.getTelefones().addAll(Arrays.asList("9999999", "8888888"));
 
 		Endereco e1 = new Endereco(null, "Ruas Flores", "300", "Apt 303", "Jardim", "70660081", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 150", "Centro", "70660081", cli1, c2);
+		Endereco e3 = new Endereco(null, "Avenida Leste", "205", null, "Centro", "70660082", cli2, c2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
-
-		List<Endereco> listaEndereco = Arrays.asList(e1, e2);
 		
-		clienteRepository.save(cli1);
+		cli1.getEnderecos().addAll(Arrays.asList(e3));
+
+		List<Endereco> listaEndereco = Arrays.asList(e1, e2, e3);
+		
+		clienteRepository.save(Arrays.asList(cli1, cli2));
 		enderecoRepository.save(listaEndereco);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
