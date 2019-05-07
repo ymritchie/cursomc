@@ -14,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ritchie.cursomc.domain.Cidade;
 import com.ritchie.cursomc.domain.Cliente;
 import com.ritchie.cursomc.domain.Endereco;
+import com.ritchie.cursomc.domain.enums.Perfil;
 import com.ritchie.cursomc.domain.enums.TipoCliente;
 import com.ritchie.cursomc.dto.ClienteDTO;
 import com.ritchie.cursomc.dto.ClienteNewDTO;
 import com.ritchie.cursomc.repositories.ClienteRepository;
 import com.ritchie.cursomc.repositories.EnderecoRepository;
+import com.ritchie.cursomc.security.UserSS;
+import com.ritchie.cursomc.services.exceptions.AuthorizationException;
 import com.ritchie.cursomc.services.exceptions.DataIntegrityException;
 import com.ritchie.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -35,7 +38,12 @@ public class ClienteService {
 	private EnderecoRepository endreEnderecoRepository;
 	
 	public Cliente find(Integer id) {
-		 Cliente obj = repository.findOne(id);
+		UserSS user = UserService.authenticated();
+		
+		if (user == null || user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado");
+		}
+		Cliente obj = repository.findOne(id);
 		 if (obj == null) {
 			 throw new ObjectNotFoundException("Cliente não encontrado para o ID " + id + " na classe " + Cliente.class.getName());
 		 }
