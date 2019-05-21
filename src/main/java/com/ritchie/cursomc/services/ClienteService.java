@@ -1,5 +1,6 @@
 package com.ritchie.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ritchie.cursomc.domain.Cidade;
 import com.ritchie.cursomc.domain.Cliente;
@@ -36,6 +38,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoRepository endreEnderecoRepository;
+	
+	@Autowired
+	private S3Service s3Service;
 	
 	public Cliente find(Integer id) {
 		UserSS user = UserService.authenticated();
@@ -110,6 +115,10 @@ public class ClienteService {
 		}
 		
 		return cli;
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multiPartFile) {
+		return this.s3Service.uploadFile(multiPartFile);
 	}
 }
 
