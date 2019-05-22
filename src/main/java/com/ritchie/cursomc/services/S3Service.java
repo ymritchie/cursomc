@@ -1,5 +1,6 @@
 package com.ritchie.cursomc.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -12,8 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 
 @Service
 public class S3Service {
@@ -52,6 +56,19 @@ public class S3Service {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Erro ao converter URL para URI");
+		}
+	}
+	
+	public void uploadFile(String localFilePath) {
+		try {
+			File file = new File(localFilePath);
+			LOG.info("Iniciando Upload");
+			s3Client.putObject(new PutObjectRequest(bucketName, "teste", file));
+			LOG.info("Upload concluido..");
+		} catch(AmazonServiceException e) {
+			LOG.info("AmazonServiceException: " + e.getErrorMessage());
+		} catch (AmazonClientException e) {
+			LOG.info("AmazonServiceException: " + e.getMessage());
 		}
 	}
 
