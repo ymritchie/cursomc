@@ -2,6 +2,8 @@ package com.ritchie.cursomc.resource;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ritchie.cursomc.domain.Categoria;
 import com.ritchie.cursomc.domain.Pedido;
-import com.ritchie.cursomc.dto.CategoriaDTO;
 import com.ritchie.cursomc.services.PedidoService;
 
 @RestController
@@ -32,7 +32,7 @@ public class PedidoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Pedido obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj){
 		
 		obj = service.insert(obj);
 		

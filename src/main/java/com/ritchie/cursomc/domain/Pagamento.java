@@ -65,10 +65,6 @@ public abstract class Pagamento implements Serializable {
 		this.pedido = pedido;
 	}
 
-	public void setEstado(Integer estado) {
-		this.estado = estado;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

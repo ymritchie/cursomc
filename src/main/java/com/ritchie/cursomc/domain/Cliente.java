@@ -118,9 +118,7 @@ public class Cliente implements Serializable{
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
-	}
+	
 	public String getSenha() {
 		return senha;
 	}
