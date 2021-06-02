@@ -1,10 +1,12 @@
 package com.ritchie.cursomc.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,12 +46,12 @@ public class PedidoService {
 	
 	
 	public Pedido find(Integer id) {
-		Pedido obj = repository.findOne(id);
+		Optional<Pedido> obj = repository.findById(id);
 		
-		if (obj == null) {
+		if (!obj.isPresent()) {
 			throw new ObjectNotFoundException("Pedido não encontrado para o ID " + id + " na classe " + Pedido.class.getName()); 
 		}
-		return obj; 
+		return obj.get(); 
 	}
 	
 	@Transactional
@@ -75,7 +77,7 @@ public class PedidoService {
 			ip.setPedido(obj);
 		}
 		
-		itemPedidoRepository.save(obj.getItens());
+		itemPedidoRepository.saveAll(obj.getItens());
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
 	}
@@ -87,7 +89,7 @@ public class PedidoService {
 			throw new AuthorizationException("Acesso negado!");
 		}
 		
-		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Pageable pageRequest =PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		Cliente cliente = clienteService.find(user.getId());
 		
 		return repository.findByCliente(cliente, pageRequest);

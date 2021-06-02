@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: curso-mc
+  name: curso-mc
+  namespace: java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curso-mc
+  template:
+    metadata:
+      labels:
+        app: curso-mc
+    spec:
+      containers:
+      - name: curso-mc
+        image: ymritchie/curso-mc-image:v1
+        ports:
+        - containerPort: 8080
+          name: curso-mc

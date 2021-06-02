@@ -3,12 +3,14 @@ package com.ritchie.cursomc.services;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,11 +61,11 @@ public class ClienteService {
 		if (user == null || user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso Negado");
 		}
-		Cliente obj = repository.findOne(id);
-		 if (obj == null) {
+		Optional<Cliente> obj = repository.findById(id);
+		 if (!obj.isPresent()) {
 			 throw new ObjectNotFoundException("Cliente não encontrado para o ID " + id + " na classe " + Cliente.class.getName());
 		 }
-		return obj; 
+		return obj.get(); 
 	}
 	
 	public Cliente update(Cliente obj) {
@@ -80,7 +82,7 @@ public class ClienteService {
 	public void delete(Integer id) {
 		find(id);
 		try {
-			repository.delete(id);
+			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque existem entidades relacionadas.");
 		}
@@ -93,7 +95,7 @@ public class ClienteService {
 	}
 	
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
-		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Pageable pageRequest =PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
 	}
 	
@@ -105,7 +107,7 @@ public class ClienteService {
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		obj = repository.save(obj);
-		endreEnderecoRepository.save(obj.getEnderecos());
+		endreEnderecoRepository.saveAll(obj.getEnderecos());
 		return obj;
 		
 	}

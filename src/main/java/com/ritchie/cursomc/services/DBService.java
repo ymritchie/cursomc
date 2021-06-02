@@ -192,10 +192,10 @@ public class DBService {
 		p49.getCategorias().add(cat1);
 		p50.getCategorias().add(cat1);
 		
-		categoriaRepository.save(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
-		produtoRepository.save(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
+		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		
-		produtoRepository.save(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
+		produtoRepository.saveAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
 				p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
 				p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
 
@@ -212,8 +212,8 @@ public class DBService {
 		List<Estado> listaEstado = Arrays.asList(est1, est2);
 		List<Cidade> listaCidade = Arrays.asList(c1, c2, c3);
 
-		estadoRepository.save(listaEstado);
-		cidadeRepository.save(listaCidade);
+		estadoRepository.saveAll(listaEstado);
+		cidadeRepository.saveAll(listaCidade);
 
 		Cliente cli1 = new Cliente(null, "Maria ", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123"));
 		
@@ -234,8 +234,8 @@ public class DBService {
 
 		List<Endereco> listaEndereco = Arrays.asList(e1, e2, e3);
 		
-		clienteRepository.save(Arrays.asList(cli1, cli2));
-		enderecoRepository.save(listaEndereco);
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(listaEndereco);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -255,8 +255,8 @@ public class DBService {
 		
 		List<Pagamento> listaPagamento = Arrays.asList(pagto1, pagto2);
 
-		pedidoRepository.save(listaPedido);
-		pagamentoRepository.save(listaPagamento);
+		pedidoRepository.saveAll(listaPedido);
+		pagamentoRepository.saveAll(listaPagamento);
 
 		ItemPedido ip1 = new ItemPedido(ped1, p1, 0D, 1, 2000D);
 
@@ -274,6 +274,6 @@ public class DBService {
 		
 		List<ItemPedido> listaItemPedido = Arrays.asList(ip1, ip2, ip3);
 
-		itemPedidoRepository.save(listaItemPedido);
+		itemPedidoRepository.saveAll(listaItemPedido);
 	}
 }
